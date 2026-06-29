@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KTUVerse · Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --bg: #f4f4f5;
+  --surface: #ffffff;
+  --surface2: #f0f0f1;
+  --border: #e4e4e7;
+  --border-accent: #c7d2fe;
+  --blue: #060437;
+  --cyan: #6366f1;
+  --text: #1c1c1e;
+  --muted: #71717a;
+  --muted2: #52525b;
+  --font: 'Space Grotesk', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+html, body { height: 100%; }
+
+body {
+  font-family: var(--font);
+  background: linear-gradient(135deg, #060437 0%, #312e81 45%, #6366f1 100%);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 36px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 20px 60px rgba(6,4,55,0.35);
+}
+
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.logo-mark {
+  width: 36px; height: 36px; border-radius: 9px;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.logo-mark svg { width: 20px; height: 20px; fill: white; }
+.logo-text {
+  font-weight: 700; font-size: 20px; letter-spacing: -0.3px;
+}
+.logo-text span { color: var(--blue); }
+
+.welcome-badge {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--blue);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+h1 {
+  font-size: 22px; font-weight: 700;
+  text-align: center;
+  margin-bottom: 4px;
+}
+.subtitle {
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+label {
+  display: block;
+  font-size: 12px; font-weight: 600;
+  color: var(--muted2);
+  margin-bottom: 6px;
+  margin-top: 16px;
+}
+
+.field-hint {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+
+input, select {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface2);
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+input:focus, select:focus {
+  border-color: #a5b4fc;
+  box-shadow: 0 0 0 3px rgba(79,70,229,0.07);
+}
+
+.password-row {
+  position: relative;
+}
+.toggle-pw {
+  position: absolute;
+  right: 12px; top: 50%;
+  transform: translateY(-3px);
+  background: none; border: none;
+  cursor: pointer; color: var(--muted);
+  font-size: 11px; font-weight: 600;
+  font-family: var(--font);
+  padding: 4px;
+}
+.toggle-pw:hover { color: var(--blue); }
+
+.row-between {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 14px;
+}
+.checkbox-row {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 13px; color: var(--muted2);
+}
+.checkbox-row input { width: auto; padding: 0; }
+
+.link {
+  color: var(--blue);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: none;
+  background: none; border: none;
+  font-family: var(--font);
+}
+.link:hover { text-decoration: underline; }
+
+.submit-btn {
+  width: 100%;
+  margin-top: 24px;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: var(--blue);
+  color: white;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.submit-btn:hover { background: #2563eb; }
+.submit-btn:disabled { opacity: 0.6; cursor: default; }
+
+.switch-row {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.error-msg, .success-msg {
+  display: none;
+  font-size: 13px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+.error-msg {
+  background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c;
+}
+.success-msg {
+  background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d;
+}
+.error-msg.visible, .success-msg.visible { display: block; }
+
+.view { display: none; }
+.view.active { display: block; }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </div>
+    <span class="logo-text">KTU<span>Verse</span></span>
+  </div>
+  <div class="welcome-badge">APJ Abdul Kalam Technological University</div>
+
+  <!-- ───────────────── LOGIN VIEW ───────────────── -->
+  <div class="view active" id="loginView">
+    <h1>Welcome back</h1>
+    <p class="subtitle">Log in to continue to KTUVerse</p>
+
+    <form id="loginForm">
+      <label for="loginUsername">Username</label>
+      <input type="text" id="loginUsername" autocomplete="username" required>
+
+      <label for="loginPassword">Password</label>
+      <div class="password-row">
+        <input type="password" id="loginPassword" autocomplete="current-password" required>
+        <button type="button" class="toggle-pw" onclick="togglePassword('loginPassword', this)">SHOW</button>
+      </div>
+
+      <div class="row-between">
+        <label class="checkbox-row" style="margin:0;">
+          <input type="checkbox" id="rememberMe" checked>
+          Remember me
+        </label>
+        <a class="link" onclick="showView('forgotView')">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="submit-btn" id="loginBtn">Log In</button>
+      <div class="error-msg" id="loginError"></div>
+    </form>
+
+    <div class="switch-row">
+      Don't have an account?
+      <a class="link" onclick="showView('registerView')">Register</a>
+    </div>
+  </div>
+
+  <!-- ───────────────── REGISTER VIEW ───────────────── -->
+  <div class="view" id="registerView">
+    <h1>Create your account</h1>
+    <p class="subtitle">Join KTUVerse to get started</p>
+
+    <form id="registerForm">
+      <label for="regUsername">Username</label>
+      <input type="text" id="regUsername" autocomplete="username" required minlength="3">
+
+      <label for="regPassword">Password</label>
+      <div class="password-row">
+        <input type="password" id="regPassword" autocomplete="new-password" required minlength="6">
+        <button type="button" class="toggle-pw" onclick="togglePassword('regPassword', this)">SHOW</button>
+      </div>
+      <div class="field-hint">At least 6 characters</div>
+
+      <label for="regConfirmPassword">Confirm Password</label>
+      <div class="password-row">
+        <input type="password" id="regConfirmPassword" autocomplete="new-password" required minlength="6">
+        <button type="button" class="toggle-pw" onclick="togglePassword('regConfirmPassword', this)">SHOW</button>
+      </div>
+
+      <label for="regSecurityQuestion">Security Question</label>
+      <select id="regSecurityQuestion" required>
+        <option value="">Select a question…</option>
+        <option value="What is your favorite color?">What is your favorite color?</option>
+        <option value="What is your pet's name?">What is your pet's name?</option>
+        <option value="What is your hometown?">What is your hometown?</option>
+        <option value="What was your first school's name?">What was your first school's name?</option>
+        <option value="What is your favorite movie?">What is your favorite movie?</option>
+      </select>
+
+      <label for="regSecurityAnswer">Answer</label>
+      <input type="text" id="regSecurityAnswer" required>
+      <div class="field-hint">Used to recover your account if you forget your password</div>
+
+      <label class="checkbox-row" style="margin-top:18px;">
+        <input type="checkbox" id="agreeTerms" required>
+        I agree to the KTUVerse Terms of Use and Privacy Policy
+      </label>
+
+      <button type="submit" class="submit-btn" id="registerBtn">Register</button>
+      <div class="error-msg" id="registerError"></div>
+      <div class="success-msg" id="registerSuccess"></div>
+    </form>
+
+    <div class="switch-row">
+      Already have an account?
+      <a class="link" onclick="showView('loginView')">Log In</a>
+    </div>
+  </div>
+
+  <!-- ───────────────── FORGOT PASSWORD VIEW ───────────────── -->
+  <div class="view" id="forgotView">
+    <h1>Reset password</h1>
+    <p class="subtitle">Step <span id="forgotStep">1</span> of 2</p>
+
+    <!-- Step 1: enter username -->
+    <form id="forgotStep1Form">
+      <label for="forgotUsername">Username</label>
+      <input type="text" id="forgotUsername" autocomplete="username" required>
+
+      <button type="submit" class="submit-btn">Continue</button>
+      <div class="error-msg" id="forgotStep1Error"></div>
+    </form>
+
+    <!-- Step 2: answer security question + set new password -->
+    <form id="forgotStep2Form" style="display:none;">
+      <label id="securityQuestionLabel" style="margin-top:16px;"></label>
+      <input type="text" id="securityAnswerInput" required>
+
+      <label for="newPassword">New Password</label>
+      <div class="password-row">
+        <input type="password" id="newPassword" autocomplete="new-password" required minlength="6">
+        <button type="button" class="toggle-pw" onclick="togglePassword('newPassword', this)">SHOW</button>
+      </div>
+      <div class="field-hint">At least 6 characters</div>
+
+      <label for="confirmNewPassword">Confirm New Password</label>
+      <div class="password-row">
+        <input type="password" id="confirmNewPassword" autocomplete="new-password" required minlength="6">
+        <button type="button" class="toggle-pw" onclick="togglePassword('confirmNewPassword', this)">SHOW</button>
+      </div>
+
+      <button type="submit" class="submit-btn">Reset Password</button>
+      <div class="error-msg" id="forgotStep2Error"></div>
+      <div class="success-msg" id="forgotSuccess"></div>
+    </form>
+
+    <div class="switch-row">
+      <a class="link" onclick="showView('loginView')">Back to Log In</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const BACKEND = 'http://127.0.0.1:8000';
+
+// If already logged in, go straight to chatbot
+if (localStorage.getItem('token')) {
+  window.location.href = 'chatbot.html';
+}
+
+// ── VIEW SWITCHING ─────────────────────────────────────────────────────────
+function showView(viewId) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(viewId).classList.add('active');
+
+  if (viewId === 'forgotView') {
+    document.getElementById('forgotStep1Form').style.display = 'block';
+    document.getElementById('forgotStep2Form').style.display = 'none';
+    document.getElementById('forgotStep').textContent = '1';
+    document.getElementById('forgotStep1Error').classList.remove('visible');
+    document.getElementById('forgotStep2Error').classList.remove('visible');
+    document.getElementById('forgotSuccess').classList.remove('visible');
+    document.getElementById('forgotUsername').value = '';
+  }
+}
+
+// ── SHOW/HIDE PASSWORD ───────────────────────────────────────────────────────
+function togglePassword(inputId, btn) {
+  const input = document.getElementById(inputId);
+  if (input.type === 'password') {
+    input.type = 'text';
+    btn.textContent = 'HIDE';
+  } else {
+    input.type = 'password';
+    btn.textContent = 'SHOW';
+  }
+}
+
+// ── LOGIN ─────────────────────────────────────────────────────────────────────
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const errorEl = document.getElementById('loginError');
+  errorEl.classList.remove('visible');
+
+  const username = document.getElementById('loginUsername').value.trim();
+  const password = document.getElementById('loginPassword').value;
+
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = true;
+  btn.textContent = 'Logging in…';
+
+  try {
+    const res = await fetch(`${BACKEND}/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    });
+    const data = await res.json();
+
+    if (data.status === 'success') {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('username', data.username);
+      window.location.href = 'chatbot.html';
+      return;
+    } else {
+      errorEl.textContent = data.message || 'Login failed';
+      errorEl.classList.add('visible');
+    }
+  } catch (err) {
+    errorEl.textContent = 'Could not connect to server. Make sure the backend is running.';
+    errorEl.classList.add('visible');
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Log In';
+});
+
+// ── REGISTER ─────────────────────────────────────────────────────────────────
+document.getElementById('registerForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const errorEl = document.getElementById('registerError');
+  const successEl = document.getElementById('registerSuccess');
+  errorEl.classList.remove('visible');
+  successEl.classList.remove('visible');
+
+  const username = document.getElementById('regUsername').value.trim();
+  const password = document.getElementById('regPassword').value;
+  const confirmPassword = document.getElementById('regConfirmPassword').value;
+  const securityQuestion = document.getElementById('regSecurityQuestion').value;
+  const securityAnswer = document.getElementById('regSecurityAnswer').value.trim();
+  const agreed = document.getElementById('agreeTerms').checked;
+
+  if (password !== confirmPassword) {
+    errorEl.textContent = 'Passwords do not match';
+    errorEl.classList.add('visible');
+    return;
+  }
+  if (!securityQuestion) {
+    errorEl.textContent = 'Please select a security question';
+    errorEl.classList.add('visible');
+    return;
+  }
+  if (!agreed) {
+    errorEl.textContent = 'You must agree to the Terms of Use to register';
+    errorEl.classList.add('visible');
+    return;
+  }
+
+  const btn = document.getElementById('registerBtn');
+  btn.disabled = true;
+  btn.textContent = 'Registering…';
+
+  try {
+    const res = await fetch(`${BACKEND}/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username, password,
+        security_question: securityQuestion,
+        security_answer: securityAnswer
+      })
+    });
+    const data = await res.json();
+
+    if (data.status === 'success') {
+      successEl.textContent = 'Account created! You can now log in.';
+      successEl.classList.add('visible');
+      document.getElementById('registerForm').reset();
+      setTimeout(() => showView('loginView'), 1200);
+    } else {
+      errorEl.textContent = data.message || 'Registration failed';
+      errorEl.classList.add('visible');
+    }
+  } catch (err) {
+    errorEl.textContent = 'Could not connect to server. Make sure the backend is running.';
+    errorEl.classList.add('visible');
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Register';
+});
+
+// ── FORGOT PASSWORD: STEP 1 ──────────────────────────────────────────────────
+let forgotUsernameValue = '';
+
+document.getElementById('forgotStep1Form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const errorEl = document.getElementById('forgotStep1Error');
+  errorEl.classList.remove('visible');
+
+  const username = document.getElementById('forgotUsername').value.trim();
+
+  try {
+    const res = await fetch(`${BACKEND}/forgot-password/question`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username })
+    });
+    const data = await res.json();
+
+    if (data.status === 'success') {
+      forgotUsernameValue = username;
+      document.getElementById('securityQuestionLabel').textContent = data.security_question;
+      document.getElementById('forgotStep1Form').style.display = 'none';
+      document.getElementById('forgotStep2Form').style.display = 'block';
+      document.getElementById('forgotStep').textContent = '2';
+    } else {
+      errorEl.textContent = data.message || 'Account not found';
+      errorEl.classList.add('visible');
+    }
+  } catch (err) {
+    errorEl.textContent = 'Could not connect to server. Make sure the backend is running.';
+    errorEl.classList.add('visible');
+  }
+});
+
+// ── FORGOT PASSWORD: STEP 2 ──────────────────────────────────────────────────
+document.getElementById('forgotStep2Form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const errorEl = document.getElementById('forgotStep2Error');
+  const successEl = document.getElementById('forgotSuccess');
+  errorEl.classList.remove('visible');
+  successEl.classList.remove('visible');
+
+  const answer = document.getElementById('securityAnswerInput').value.trim();
+  const newPassword = document.getElementById('newPassword').value;
+  const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+
+  if (newPassword !== confirmNewPassword) {
+    errorEl.textContent = 'Passwords do not match';
+    errorEl.classList.add('visible');
+    return;
+  }
+
+  try {
+    const res = await fetch(`${BACKEND}/forgot-password/reset`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: forgotUsernameValue,
+        security_answer: answer,
+        new_password: newPassword
+      })
+    });
+    const data = await res.json();
+
+    if (data.status === 'success') {
+      successEl.textContent = 'Password reset successfully! You can now log in.';
+      successEl.classList.add('visible');
+      setTimeout(() => showView('loginView'), 1500);
+    } else {
+      errorEl.textContent = data.message || 'Reset failed';
+      errorEl.classList.add('visible');
+    }
+  } catch (err) {
+    errorEl.textContent = 'Could not connect to server. Make sure the backend is running.';
+    errorEl.classList.add('visible');
+  }
+});
+</script>
+
+</body>
+</html>

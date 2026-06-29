@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+*.egg-info/
+
+# Project data & generated files
+data/
+vectorstore/
+app.db
+
+# Editor
+.vscode/
+
+# OS junk
+desktop.ini
+.DS_Store
+
+# Env / secrets
+.env
+*.key
